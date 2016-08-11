@@ -24,6 +24,11 @@ public class SocketCreate : MonoBehaviour {
 	float time;
 	float a;
 
+	public string _myCharacter {
+		get {
+			return mycharacter;
+		}
+	}
 
 	//PACKETS.PacketQueue packetInfo = new PACKETS.PacketQueue ();
 	public float _value {
@@ -119,6 +124,7 @@ public class SocketCreate : MonoBehaviour {
 		string nick = nickCreate.text;
 		short size = (short)nick.Length;
 		SendPacketString (size,nick);
+		mycharacter = nick;
 		SceneManager.LoadScene (1);
 	}
 	// Update is called once per frame
