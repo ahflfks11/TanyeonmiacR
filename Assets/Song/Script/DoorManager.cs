@@ -5,113 +5,146 @@ using UnityEngine.SceneManagement;
 public class DoorManager : MonoBehaviour
 {
 
-    public GameObject openImage;
-    public bool up, down, left, right;
-    public int SceneNumber;
+	public GameObject openImage;
+	public bool up, down, left, right;
+	public int SceneNumber;
 
-    private PlayerCtrl player;
-    private bool isOpen;
-    private int mapNum;
 
-    private AudioSource audioSource;
+	private PlayerCtrl player;
+    private MapInformation mapInfo;
 
-    void Start()
-    {
-        player = GameObject.Find("Player").GetComponent<PlayerCtrl>();
-        audioSource = GetComponent<AudioSource>();
-    }
+	private bool isOpen;
+	private int mapNum;
 
-    void Update()
-    {
-        if(isOpen)
-        {
-            DoorState();
-        }
-    }
+	private AudioSource audioSource;
 
-    void OnTriggerEnter2D(Collider2D coll)
-    {
-        if (coll.gameObject.tag == "Player")
-        {
-            isOpen = true;
-        }
+	void Start()
+	{
+		player = GameObject.Find("Player").GetComponent<PlayerCtrl>();
+        mapInfo = GameObject.Find("MapInfo").GetComponent<MapInformation>();
 
-    }
+		audioSource = GetComponent<AudioSource>();
+	}
 
-    void OnTriggerExit2D(Collider2D coll)
-    {
-        if(coll.gameObject.tag=="Player")
-        {
+	void Update()
+	{
+		if(isOpen)
+		{
+			DoorState();
+		}
+	}
 
-            isOpen = false;
-        }
-    }
+	void OnTriggerEnter2D(Collider2D coll)
+	{
+		if (coll.gameObject.tag == "Player")
+		{
+			isOpen = true;
+		}
 
-    void DoorState()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!openImage.activeSelf)
+	}
+
+	void OnTriggerExit2D(Collider2D coll)
+	{
+		if(coll.gameObject.tag=="Player")
+		{
+
+			isOpen = false;
+		}
+	}
+
+	void DoorState()
+	{
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			if (!openImage.activeSelf)
+			{
+				openImage.SetActive(true);
+				audioSource.Play();
+				DontDestroyOnLoad(player);
+				MoveScene();
+			}
+			else
+			{
+				openImage.SetActive(false);
+			}
+		}
+	}
+
+
+	void MoveScene()
+	{
+		if(up || down)
+		{
+            if ((MapInformation.up && up) || (MapInformation.down && down))
             {
-                openImage.SetActive(true);
-                audioSource.Play();
-                DontDestroyOnLoad(player);
-                MoveScene();
+                mapNum = MapInformation.prevMap;
             }
             else
             {
-                openImage.SetActive(false);
-            }
-        }
-    }
-
-
-    void MoveScene()
-    {
-        if(up || down)
-        {
-            Debug.Log("상하");
-            mapNum = Random.Range(0, 6);
-
-            
-            while(mapNum==SceneNumber)
-            {
-                Debug.Log(mapNum);
-                mapNum = Random.Range(0, 6);
-            }
-        }
-        else if(left || right)
-        {
-            Debug.Log("좌우");
-            mapNum = Random.Range(3, 10);
-
-            while (mapNum == SceneNumber)
-            {
-                Debug.Log(mapNum);
                 mapNum = Random.Range(3, 10);
+
+                while (mapNum == mapInfo.sceneNum)
+                {
+                    Debug.Log(mapNum);
+                    mapNum = Random.Range(3, 10);
+                }
             }
-        }
+		}
+		else if(left || right)
+		{
+            if ((MapInformation.left && left) || (MapInformation.right && right))
+            {
+                mapNum = MapInformation.prevMap;
+            }
+
+            else
+            {
+                mapNum = Random.Range(6, 16);
+
+                while (mapNum == mapInfo.sceneNum)
+                {
+                    Debug.Log(mapNum);
+                    mapNum = Random.Range(6, 16);
+                }
+            }
+		}
 
         StartCoroutine("SceneLoading");
+
     }
 
-    IEnumerator SceneLoading()
-    {
-        Debug.Log("씬 이동 >> " + mapNum);
+	IEnumerator SceneLoading()
+	{
         yield return new WaitForSeconds(1.5f);
+        mapInfo.DoorFalse();
         DataSend();
-        SceneManager.LoadScene(mapNum);
-    }
+		SceneManager.LoadScene(mapNum);
+	}
 
     void DataSend()
-    {
-        if(up)
+	{
+        MapInformation.prevMap = mapInfo.sceneNum;
+
+        if (up)
+        {
             PlayerPosMgr.StatusPos = 1;
-        else if(down)       
-            PlayerPosMgr.StatusPos = 2;        
-        else if(left)
+            MapInformation.down = true;
+        }
+        else if (down)
+        {
+            PlayerPosMgr.StatusPos = 2;
+            MapInformation.up = true;
+        }
+        else if (left)
+        {
             PlayerPosMgr.StatusPos = 3;
-        else if(right)
+            MapInformation.right = true;
+        }
+        else if (right)
+        {
             PlayerPosMgr.StatusPos = 4;
-    }
+            MapInformation.left = true;
+        }
+
+	}
 }
