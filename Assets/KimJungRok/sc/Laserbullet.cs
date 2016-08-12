@@ -4,6 +4,7 @@ using System.Collections;
 public class Laserbullet : MonoBehaviour {
 
 	public BoxCollider2D box;
+	public SpriteRenderer Collor;
 	//BoxCollider2D box;
 	public bool laserbudlebudle;
 	// Use this for initialization
@@ -16,6 +17,10 @@ public class Laserbullet : MonoBehaviour {
 	IEnumerator Laserbalsa(){
 		//box.size = new Vector2 (0, 0);
 		//box.size = new Vector2(0,0);
+		Color Origincolor = Collor.material.color;
+		Collor.material.color = Color.red;
+
+
 		box.enabled = false;
 		yield return new WaitForSeconds (1f);
 		box.enabled = true;
@@ -30,12 +35,15 @@ public class Laserbullet : MonoBehaviour {
 		laserbudlebudle = true;
 		yield return new WaitForSeconds (1f);
 		laserbudlebudle = false;
+
+		Collor.material.color = Origincolor;
+
 		for (float i = 10; i >= 0 ; i -= 0.5f)
 		{
 			transform.localScale = new Vector3 (i, transform.localScale.y, transform.localScale.z);
 			yield return 0;
 		}
-		Destroy (gameObject);
+		//Destroy (gameObject);
 
 	}
 	
