@@ -12,7 +12,6 @@ GameObject:
   - 50: {fileID: 5017680}
   - 58: {fileID: 5870136}
   - 114: {fileID: 11447642}
-  - 122: {fileID: 12210742}
   m_Layer: 13
   m_Name: tan1
   m_TagString: Untagged
@@ -75,21 +74,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854ac77c9741bf04791b42266432a5c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.1
+  speed: 2
   rigid: {fileID: 0}
   DesTime: 1.5
   Player: {fileID: 0}
---- !u!122 &12210742
-Halo:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 152824}
-  m_Enabled: 0
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_Size: 0.21
 --- !u!212 &21272894
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -116,10 +104,10 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.562}
+  m_Sprite: {fileID: 21300000, guid: 52066fbd9d011064dbe49a8116e91b60, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
-  m_FlipY: 0
+  m_FlipY: 1
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

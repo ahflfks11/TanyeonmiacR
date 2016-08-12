@@ -8,7 +8,7 @@ public class MonsterMove : MonoBehaviour {
 	public bool Chase; //플레이어추격여부
 
 
-	public int MonsterHP;
+	public float MonsterHP;
 	public float attackPower;
 	public float speed; //이동속도
 	public GameObject Player;
@@ -200,7 +200,17 @@ public class MonsterMove : MonoBehaviour {
 		}
 
 	}
-	
+
+	void OnCollisionEnter2D(Collision2D col){
+		if(col.gameObject.CompareTag("Weapon")){
+			MonsterHP -= 1; // 플레이어무기의 공격력만큼 몬스터의hp를 깍음
+		//	Instantiate (Effector2D, col.transform.position, Quaternion.identity);
+			Destroy(col.gameObject);
+		}
+		//damagedevent//피격시이벤트, 이펙트, 타격감
+	}
+
+
 	// Update is called once per frame
 	void Update () {
 
