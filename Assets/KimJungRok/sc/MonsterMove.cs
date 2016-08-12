@@ -66,6 +66,10 @@ public class MonsterMove : MonoBehaviour {
 		_renderer = GetComponent<Renderer> ();
 	}
 
+	void Playerserch(){
+		Player = GameObject.FindGameObjectWithTag ("Player");
+	}
+
 	IEnumerator Fadein(){
 		if (one == false)
 		{
@@ -215,6 +219,9 @@ public class MonsterMove : MonoBehaviour {
 	void Update () {
 
 		stateCheak ();
+
+		Playerserch ();
+
 		StartMoveTime += Time.deltaTime;
 		if (StartMoveTime >= MaxMoveTime)
 		{

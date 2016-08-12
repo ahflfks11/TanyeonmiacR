@@ -26,7 +26,7 @@ public class Tanmak : MonoBehaviour {
 	void Start () {
 		//StartCoroutine (Tanmakbalsa());
 
-		Player = GameObject.Find ("Player");
+		Player = GameObject.FindGameObjectWithTag ("Player");
 		//StartCoroutine(ChaseTanmak());
 		StartCoroutine(탄쏘기());
 		AttackRange = GetComponent<MonsterMove> ();
@@ -40,6 +40,11 @@ public class Tanmak : MonoBehaviour {
 			_attackRange = 99;
 		}
 
+	}
+
+
+	void Playerserch(){
+		Player = GameObject.FindGameObjectWithTag ("Player");
 	}
 	//if (Vector2.Distance (Player.transform.position, transform.position) <= _attackRange){
 
@@ -63,6 +68,8 @@ public class Tanmak : MonoBehaviour {
 									speed * Mathf.Sin (Mathf.PI * i * 2 / oneShoting)));
 
 								obj.transform.Rotate (new Vector3 (0f, 0f, 360 * i / oneShoting - 90));
+
+								//oneShoting = Random.Range(8.4f,10);
 							}
 						}
 					}
@@ -229,6 +236,9 @@ public class Tanmak : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
+
+		Playerserch ();
+
 		startAttackTime += Time.deltaTime;
 		if (startAttackTime >= MaxAttackTime)
 		{

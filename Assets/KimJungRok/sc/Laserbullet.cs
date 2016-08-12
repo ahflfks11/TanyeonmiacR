@@ -46,13 +46,13 @@ public class Laserbullet : MonoBehaviour {
 		//Destroy (gameObject);
 
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 		if (laserbudlebudle == true)
 		{
 			transform.localScale =new Vector3(Random.Range(9,11), transform.localScale.y, transform.localScale.z);
 		}
-	
+
 	}
 }
