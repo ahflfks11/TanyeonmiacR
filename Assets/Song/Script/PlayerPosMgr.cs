@@ -9,6 +9,7 @@ public class PlayerPosMgr : MonoBehaviour {
 
     public Vector3[] doorPos = new Vector3[4];
 
+
     void Start () {
         player = GameObject.Find("Player").GetComponent<PlayerCtrl>();
     }
@@ -27,17 +28,23 @@ public class PlayerPosMgr : MonoBehaviour {
         {
             case 1:
                 player.transform.position = doorPos[0];
+
                 break;
             case 2:
                 player.transform.position = doorPos[1];
+
                 break;
             case 3:
                 player.transform.position = doorPos[2];
+
                 break;
             case 4:
                 player.transform.position = doorPos[3];
+
                 break;
 
         }
     }
+
+
 }
