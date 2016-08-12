@@ -11,7 +11,6 @@ GameObject:
   - 212: {fileID: 21257472}
   - 50: {fileID: 5012348}
   - 58: {fileID: 5889586}
-  - 122: {fileID: 12275934}
   - 114: {fileID: 11491932}
   m_Layer: 13
   m_Name: tanreverse
@@ -84,17 +83,6 @@ MonoBehaviour:
   two: 0
   revtim2: 0
   revpow2: 0
---- !u!122 &12275934
-Halo:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 126248}
-  m_Enabled: 1
-  m_Color:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_Size: 0.15
 --- !u!212 &21257472
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -121,8 +109,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.15327641, g: 0.92318183, b: 0.99264705, a: 1}
+  m_Sprite: {fileID: 21300000, guid: bd35284a2746a3049b8e2653ed66c6c5, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!1001 &100100000

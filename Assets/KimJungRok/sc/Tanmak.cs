@@ -118,7 +118,8 @@ public class Tanmak : MonoBehaviour {
 		if (어떻게쏠까 == 어떤탄.추격탄)
 		{
 			do
-			{			if (Player != null){
+			{			
+				if (Player != null){
 
 
 					Vector2 vec2PlayerPosition = new Vector2 (Player.transform.position.x, Player.transform.position.y);
