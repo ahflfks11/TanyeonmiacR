@@ -18,8 +18,9 @@ public class SocketCreate : MonoBehaviour {
 
 	InputField nickCreate;
 	Packet packet = new Packet();
+	GameObject errorObject;
 	Socket clientSock=null;
-	string mycharacter;
+	string mycharacter=null;
 	byte[] msg;
 	float time;
 	float a;
@@ -40,6 +41,8 @@ public class SocketCreate : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		msg = new byte[1024];
+		errorObject = GameObject.Find ("Error");
+		errorObject.gameObject.SetActive (false);
 		nickCreate = GameObject.Find ("CreateName").GetComponent<InputField> ();
 		clientSock = new Socket (AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		IPAddress serverIPaddr = Dns.GetHostAddresses ("192.168.94.85") [0];
@@ -88,6 +91,23 @@ public class SocketCreate : MonoBehaviour {
 		clientSock.Send (packet);
 	}
 
+	public void SendPacketScore(short _size, string _stringData,float _floatData){
+		short size = _size;
+		short typeNum = 3;
+		byte[] header = new byte[2];
+		header[0] = (byte)size;
+		header[1] = (byte)typeNum;
+		//byte[] type = BitConverter.GetBytes(typeNum);
+		byte[] floatBody = BitConverter.GetBytes (_floatData);
+		byte[] stringBody = Encoding.Unicode.GetBytes(_stringData);
+		byte[] packet = new byte[stringBody.Length+floatBody.Length+header.Length];  
+
+		System.Array.Copy(header, 0, packet, 0, header.Length);
+		System.Array.Copy(floatBody, 0, packet, header.Length, floatBody.Length);
+		System.Array.Copy(stringBody, 0, packet, header.Length+floatBody.Length, stringBody.Length);
+		clientSock.Send (packet);
+	}
+
 	public int ReceiveHead(byte[] msg){
 
 		int headLength = 0;
@@ -102,7 +122,30 @@ public class SocketCreate : MonoBehaviour {
 	}
 
 	public void ReceiveBody(byte[] msg, int bodyLength){
+		
+		int readLength = 0;
 
+		if (packet.type == 0) {
+			return;
+		} else if (packet.type == 1) {
+			readLength = clientSock.Receive (msg, 0,4,SocketFlags.None);
+			string message = Encoding.Unicode.GetString (msg, 0, readLength);
+			//stringText.text = ""+message;
+		} else if (packet.type == 2) {
+			readLength = clientSock.Receive (msg, 0,4,SocketFlags.None);
+			a = BitConverter.ToSingle (msg, 0);
+			//floatText.text = ""+a;
+		}else if (packet.type == 3) {
+			readLength = clientSock.Receive (msg, 0,4,SocketFlags.None);
+			Debug.Log ("Score");
+			float score = BitConverter.ToSingle (msg, 0);
+			Debug.Log ("Now Score : "+score);
+			readLength = clientSock.Receive (msg, 0,msg.Length,SocketFlags.None);
+			string name = Encoding.Unicode.GetString (msg,0,readLength);
+			Debug.Log("Master : "+name);
+		}
+
+		/*
 		int readLength = 0;
 
 		readLength = clientSock.Receive (msg, 0,msg.Length,SocketFlags.None);
@@ -116,24 +159,33 @@ public class SocketCreate : MonoBehaviour {
 			a = BitConverter.ToSingle (msg, 0);
 			//floatText.text = ""+a;
 		}
-
+*/
 		packet.type = 0;
 	}
 
 	public void CreateNick(){
-		string nick = nickCreate.text;
-		short size = (short)nick.Length;
-		SendPacketString (size,nick);
-		mycharacter = nick;
-		SceneManager.LoadScene (1);
+		try{
+			string nick = nickCreate.text;
+			short size = (short)nick.Length;
+			SendPacketString (size,nick);
+			mycharacter = nick;
+			SceneManager.LoadScene (1);
+		}catch{
+			errorObject.gameObject.SetActive (true);
+		}
+
 	}
+
 	// Update is called once per frame
 	void Update () {
+		
 		DontDestroyOnLoad (this);
 		if (clientSock != null) {
-			if (Input.GetButtonDown("Horizontal")) {
+			if (Input.GetButtonDown ("Horizontal")) {
 				float value = Input.GetAxis ("Horizontal");
-				SendPacketFloat (sizeof(float),Input.GetAxisRaw ("Horizontal"));
+				if (mycharacter != null) {
+					SendPacketScore ((short)(sizeof(float) + mycharacter.Length), mycharacter, Input.GetAxisRaw ("Horizontal"));
+				}
 			}
 
 			if (Input.GetKeyDown(KeyCode.Space)){

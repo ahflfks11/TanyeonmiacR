@@ -14,6 +14,5 @@ public class PlayerCreate : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 }
